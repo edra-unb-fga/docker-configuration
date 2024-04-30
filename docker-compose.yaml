@@ -71,11 +71,35 @@ services:
 
   # COMPLETE
   # ----- v0.0 | 3.36GB
+  # ros-px4-complete:
+  #   image: ros-px4-complete:v0.0  
+  #   container_name: ros-px4-complete
+  #   build:
+  #     context: .
+  #     dockerfile: ./complete/complete:v0.0.Dockerfile
+  #   environment:
+  #     - DISPLAY=:0
+  #     - LIBGL_ALWAYS_SOFTWARE=1
+  #   stdin_open: true
+  #   tty: true
+
+    # ADDS GNUP
   ros-px4-complete:
-    image: ros-px4-complete:v0.0  
-    container_name: ros-px4-complete
+    image: ros-px4-complete:v0.1  
+    container_name: ros-px4-complete-v0.1
     build:
       context: .
       dockerfile: ./complete/complete:v0.0.Dockerfile
+    environment:
+      - DISPLAY=:0
+      - LIBGL_ALWAYS_SOFTWARE=1
     stdin_open: true
     tty: true
+
+  # test:
+  #   image: test:v0.0  
+  #   container_name: test
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+
