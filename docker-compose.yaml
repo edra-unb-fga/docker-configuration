@@ -1,23 +1,7 @@
 version: '3.9'
 
 services:
-  # 1.UBUNTU
-  ubuntu-focal:
-    image: ubuntu:focal
-
-  # ----------- ROS-FOXY-CORE
-  # ----- v0.0 | 783MB 
-  # ros2-foxy:
-  #   image: ros2-foxy-core:v0.0
-  #   container_name: ros2-foxy-core-v0.0
-  #   build:
-  #     context: .
-  #     dockerfile: ./ros2/foxy-core:v0.0.Dockerfile
-  #   depends_on:
-  #     - ubuntu-focal
-  #   stdin_open: true
-  #   tty: true
-
+  # ----------- ROS-FOXY-CORE --------------
   # ----- v0.1 | 1.05GB
   # ros2-foxy:
   #   image: ros2-foxy-core:v0.1
@@ -25,81 +9,45 @@ services:
   #   build:
   #     context: .
   #     dockerfile: ./ros2/foxy-core:v0.1.Dockerfile
-  #   depends_on:
-  #     - ubuntu-focal
   #   stdin_open: true
   #   tty: true
 
-  # ----------- ROS-FOXY-BASE
-  # ----- v0.0 | 1.05GB
+  # ----------- ROS-FOXY-BASE --------------
+  # # ----- v0.0 | 786MB
   # ros2-foxy:
-  #   image: ros2-foxy-base:v0.0  
+  #   image: ros2-foxy-base:v0.1  
   #   container_name: ros2-foxy-base
   #   build:
   #     context: .
-  #     dockerfile: ./ros2/foxy-base:v0.0.Dockerfile
+  #     dockerfile: ./ros2/foxy-base:v0.1.Dockerfile
   #   depends_on:
   #     - ubuntu-focal
   #   stdin_open: true
   #   tty: true
 
-  # ----- v0.0 | 786MB
-  ros2-foxy:
-    image: ros2-foxy-base:v0.1  
-    container_name: ros2-foxy-base
-    build:
-      context: .
-      dockerfile: ./ros2/foxy-base:v0.1.Dockerfile
-    depends_on:
-      - ubuntu-focal
-    stdin_open: true
-    tty: true
-
-  # ----------- PX4-CORE
-  # ----- v0.0 | 1.08GB
-  px4:
-    image: px4-core:v0.0  
-    container_name: px4-core
-    build:
-      context: .
-      dockerfile: ./px4/px4-core:v0.0.Dockerfile
-    depends_on:
-      - ubuntu-focal
-    stdin_open: true
-    tty: true
-
-
-  # COMPLETE
-  # ----- v0.0 | 3.36GB
-  # ros-px4-complete:
-  #   image: ros-px4-complete:v0.0  
-  #   container_name: ros-px4-complete
+  # ----------- PX4-CORE --------------
+  # # ----- v0.0 | 1.08GB
+  # px4:
+  #   image: px4-core:v0.0  
+  #   container_name: px4-core
   #   build:
   #     context: .
-  #     dockerfile: ./complete/complete:v0.0.Dockerfile
-  #   environment:
-  #     - DISPLAY=:0
-  #     - LIBGL_ALWAYS_SOFTWARE=1
+  #     dockerfile: ./px4/px4-core:v0.0.Dockerfile
+  #   depends_on:
+  #     - ubuntu-focal
   #   stdin_open: true
   #   tty: true
 
-    # ADDS GNUP
+  # -------------- COMPLETE --------------
+  # ----- v0.1 | 3.36GB
   ros-px4-complete:
     image: ros-px4-complete:v0.1  
-    container_name: ros-px4-complete-v0.1
+    container_name: ros-px4-complete
     build:
       context: .
-      dockerfile: ./complete/complete:v0.0.Dockerfile
+      dockerfile: ./complete/complete:v0.1.Dockerfile
     environment:
       - DISPLAY=:0
       - LIBGL_ALWAYS_SOFTWARE=1
     stdin_open: true
     tty: true
-
-  # test:
-  #   image: test:v0.0  
-  #   container_name: test
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-
