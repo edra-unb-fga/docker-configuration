@@ -40,12 +40,12 @@ services:
 
   # -------------- COMPLETE --------------
   # ----- v0.1 | 3.36GB
-  ros-px4-complete:
-    image: ros-px4-complete:v0.1  
+  ros-px4-complete-v0.0:
+    image: ros-px4-complete:v0.0  
     container_name: ros-px4-complete
     build:
       context: .
-      dockerfile: ./complete/complete:v0.1.Dockerfile
+      dockerfile: ./complete/complete:v0.0.Dockerfile
     environment:
       - DISPLAY=:0
       - LIBGL_ALWAYS_SOFTWARE=1
