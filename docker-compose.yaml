@@ -1,0 +1,61 @@
+version: '3.9'
+
+services:
+  # ----------- ROS-FOXY-CORE --------------
+  # ----- v0.1 | 1.05GB
+  # ros2-foxy:
+  #   image: ros2-foxy-core:v0.1
+  #   container_name: ros2-foxy-core-v0.1
+  #   build:
+  #     context: .
+  #     dockerfile: ./ros2/foxy-core:v0.1.Dockerfile
+  #   stdin_open: true
+  #   tty: true
+
+  # ----------- ROS-FOXY-BASE --------------
+  # # ----- v0.0 | 786MB
+  # ros2-foxy:
+  #   image: ros2-foxy-base:v0.1  
+  #   container_name: ros2-foxy-base
+  #   build:
+  #     context: .
+  #     dockerfile: ./ros2/foxy-base:v0.1.Dockerfile
+  #   depends_on:
+  #     - ubuntu-focal
+  #   stdin_open: true
+  #   tty: true
+
+  # ----------- PX4-CORE --------------
+  # # ----- v0.0 | 1.08GB
+  # px4:
+  #   image: px4-core:v0.0  
+  #   container_name: px4-core
+  #   build:
+  #     context: .
+  #     dockerfile: ./px4/px4-core:v0.0.Dockerfile
+  #   depends_on:
+  #     - ubuntu-focal
+  #   stdin_open: true
+  #   tty: true
+
+  # -------------- COMPLETE --------------
+  # ----- v0.1 | 3.36GB
+  ros-px4-complete-v0.0:
+    image: ros-px4-complete:v0.0  
+    container_name: ros-px4-complete-v0.0
+    build:
+      context: .
+      dockerfile: ./complete/complete:v0.0.Dockerfile
+    volumes:
+      - "/etc/group:/etc/group:ro"
+      - "/etc/passwd:/etc/passwd:ro"
+      - "/etc/shadow:/etc/shadow:ro"
+      - "/etc/sudoers.d:/etc/sudoers.d:ro"
+      - "/home:/home"
+      - "~/Volumes:/home/usr"
+    environment:
+      - DISPLAY=:0
+      - LIBGL_ALWAYS_SOFTWARE=1
+    network_mode: "host"
+    stdin_open: true
+    tty: true
