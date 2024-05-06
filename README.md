@@ -21,7 +21,7 @@ Obs: Existem outros servicos comentados separadamente no docker-compose.yml, cas
 
 Após buildado, entre no container através do seguinte comando:
 ```bash
-    sudo docker exec -it ros-px4-complete /bin/bash
+    sudo docker exec -it ros-px4-complete-v0.0 /bin/bash
 ```
 
 ### 4. Verificações
