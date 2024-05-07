@@ -8,7 +8,7 @@ Clone o repositório com:
 
 A imagem completa 100% funcional é a complete/complete/v0.1.Dockerfile, para roda-la, basta usar o comando:
 ```bash
-    sudo docker compose up -d
+    env USER=${USER} docker compose up -d --build
 ```
 Obs: Existem outros servicos comentados separadamente no docker-compose.yml, caso queira builda-los, basta descomentar.
 
@@ -21,8 +21,10 @@ Obs: Existem outros servicos comentados separadamente no docker-compose.yml, cas
 
 Após buildado, entre no container através do seguinte comando:
 ```bash
-    sudo docker exec -it ros-px4-complete-v0.0 /bin/bash
+   docker exec -it --user $(id -u $USER):$(id -g $USER) ros-px4-complete /bin/bash
 ```
+
+OBS: Você pode definir alias para esse comando no seu ~/.bashrc para facilitar as coisas
 
 ### 4. Verificações
 
@@ -34,7 +36,7 @@ Você pode verificar se o ros2 está sendo identificado rodando:
 Com esse comando um guia de comandos do ros2 devem aparecer, mas caso ocorra um erro, rode o seguinte comando dentro do container e depois tente rodar ros2 novamente:
 
 ```bash
-    echo "source /opt/ros/foxy/setup.bash" >> ~/.bashrc && echo "source /opt/ros/foxy/setup.sh" >> ~/.bashrc
+   source /opt/ros/foxy/setup.bash
 ```
 
 Você pode ainda checar a versão do ubuntu:
@@ -45,19 +47,3 @@ Ou que o gazebo está abrindo corretamente com o comando a seguir, ele deve abri
 ```bash
     gazebo
 ```
-
-
-<!-- Firulas necessárias para análise-->
-<!-- VER DEPENDENCIAS DE UM PACOTE PARA EVITAR INSTALACOES DUPLICADAS -->
-apt-cache depends ros-foxy-ros-core=0.9.2-1*
-
-<!-- Verifique se todos os pacotes listados estão instalados usando o comando  -->
-dpkg -s <nome do pacote>.
-
-![alt text](Screenshot_20240430_153051.png)
-
-![alt text](Screenshot_20240430_153453.png)
-![alt text](Screenshot_20240501_170016.png)
-
-![alt text](Screenshot_20240501_091325.png)
-2.4GB depois de buildada e tudo (o repo da px4)

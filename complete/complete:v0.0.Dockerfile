@@ -107,5 +107,4 @@ RUN git clone https://github.com/PX4/PX4-Autopilot.git --recursive \
 
 RUN echo "source /opt/ros/foxy/setup.bash" >> ~/.bashrc && echo "source /opt/ros/foxy/setup.sh" >> ~/.bashrc
 
-
 ENTRYPOINT ["/bin/bash"]
