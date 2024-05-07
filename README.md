@@ -3,7 +3,13 @@ Clone o repositório com:
 ```bash
     git clone git@github.com:edra-unb-fga/docker-configuration.git
 ```
+
 ### 1. Build da imagem
+Primeiro, crie uma pasta para o armazenamento dos Volumes do docker, caso não tenha ainda:
+```bash
+    mkdir ~/Volumes
+```
+
 ⚠️ A imagem é gigante e pesada mas contém tudo de que precisamos (na teoria) referente a px4, simuladores e o ros, por favor, não se assuste. O tempo de build estimado está entre 1h30-2h.
 
 A imagem completa 100% funcional é a complete/complete/v0.1.Dockerfile, para roda-la, basta usar o comando:
