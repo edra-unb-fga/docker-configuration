@@ -14,7 +14,7 @@ Primeiro, crie uma pasta para o armazenamento dos Volumes do docker, caso não t
 
 A imagem completa 100% funcional é a complete/complete/v0.1.Dockerfile, para roda-la, basta usar o comando:
 ```bash
-    env USER=${USER} docker compose up -d --build
+    docker compose up -d --build
 ```
 Obs: Existem outros servicos comentados separadamente no docker-compose.yml, caso queira builda-los, basta descomentar.
 
@@ -27,7 +27,7 @@ Obs: Existem outros servicos comentados separadamente no docker-compose.yml, cas
 
 Após buildado, entre no container através do seguinte comando:
 ```bash
-   docker exec -it --user $(id -u $USER):$(id -g $USER) ros-px4-complete /bin/bash
+   docker exec -it ros-px4-complete /bin/bash
 ```
 
 OBS: Você pode definir alias para esse comando no seu ~/.bashrc para facilitar as coisas

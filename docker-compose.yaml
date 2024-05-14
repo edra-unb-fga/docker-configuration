@@ -40,22 +40,93 @@ services:
 
   # -------------- COMPLETE --------------
   # ----- v0.1 | 3.36GB
-  ros-px4-complete-v0.0:
-    image: ros-px4-complete:v0.0  
+  # ros-px4-complete-v0.0:
+    # image: ros-px4-complete:v0.0  
+    # container_name: ros-px4-complete
+    # build:
+    #   context: .
+    #   dockerfile: ./complete/complete:v0.0.Dockerfile
+    # volumes:
+    #   - /etc/group:/etc/group:ro
+    #   - /etc/passwd:/etc/passwd:ro
+    #   - /etc/shadow:/etc/shadow:ro
+    #   - /etc/sudoers.d:/etc/sudoers.d:ro
+    #   - /home:/home:rw
+    #   - /home/${USER}/Volumes:/Volumes
+    # environment:
+    #   - DISPLAY=:0
+    #   - LIBGL_ALWAYS_SOFTWARE=1
+    # network_mode: "host"
+    # stdin_open: true
+    # tty: true
+
+  # ros-px4-complete-v0.0:
+  #   image: ros-px4-complete:v0.0 
+  #   # TODO:CHANGE NAME
+  #   container_name: ros-px4-complete
+  #   build:
+  #     context: .
+  #     dockerfile: ./complete/complete:v0.0.Dockerfile
+  #     args:
+  #       HOST_USER: ${USER}
+  #   volumes:
+  #     - /etc/group:/etc/group:ro
+  #     - /etc/passwd:/etc/passwd:ro
+  #     - /etc/shadow:/etc/shadow:ro
+  #     - /etc/sudoers.d:/etc/sudoers.d:ro
+  #     - /home:/home:rw
+  #     - /home/${USER}/Volumes:/edra/Volumes
+  #   environment:
+  #     - DISPLAY=:0
+  #     - LIBGL_ALWAYS_SOFTWARE=1
+  #     - USER=${HOST_USER}
+  #   network_mode: "host"
+  #   stdin_open: true
+  #   tty: true
+
+  ros-px4-complete-v0.1:
+    image: ros-px4-complete:v0.1
     container_name: ros-px4-complete
     build:
       context: .
-      dockerfile: ./complete/complete:v0.0.Dockerfile
+      dockerfile: ./complete/complete:v0.1.Dockerfile
+      args:
+        HOST_USER: ${USER}
     volumes:
       - /etc/group:/etc/group:ro
       - /etc/passwd:/etc/passwd:ro
       - /etc/shadow:/etc/shadow:ro
       - /etc/sudoers.d:/etc/sudoers.d:ro
       - /home:/home:rw
-      - /home/${USER}/Volumes:/Volumes
+      - /home/${USER}/Volumes:/edra/Volumes
     environment:
       - DISPLAY=:0
       - LIBGL_ALWAYS_SOFTWARE=1
+      - USER=${HOST_USER}
     network_mode: "host"
     stdin_open: true
     tty: true
+
+# HUMBLE CONTAINER
+  # ros-px4-complete-v0.2:
+  #     image: ros-px4-complete:v0.2 
+  #     container_name: ros-px4-complete-v0.2
+  #     build:
+  #       context: .
+  #       dockerfile: ./complete/complete:v0.2.Dockerfile
+  #       args:
+  #         HOST_USER: ${USER}
+  #     volumes:
+  #       - /etc/group:/etc/group:ro
+  #       - /etc/passwd:/etc/passwd:ro
+  #       - /etc/shadow:/etc/shadow:ro
+  #       - /etc/sudoers.d:/etc/sudoers.d:ro
+  #       - /home:/home:rw
+  #       - /home/${HOST_USER}/Volumes:/edra/Volumes
+  #     environment:
+  #       - DISPLAY=:0
+  #       - LIBGL_ALWAYS_SOFTWARE=1
+  #       - USER=${HOST_USER}
+  #     network_mode: "host"
+  #     stdin_open: true
+  #     tty: true
