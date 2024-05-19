@@ -1,32 +1,32 @@
-FROM ubuntu:focal
+FROM ubuntu:22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
 # --------------- ROS2-SETUP
-# setup timezone
-RUN echo 'Etc/UTC' > /etc/timezone && \
-    ln -s /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
-    apt-get update && \
-    apt-get install -q -y --no-install-recommends tzdata && \
-    rm -rf /var/lib/apt/lists/*
-
-# install packages
-RUN apt-get update && apt-get install -q -y --no-install-recommends \
-    dirmngr \
-    gnupg2 \
-    && rm -rf /var/lib/apt/lists/*
-
-# setup keys
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 4B63CF8FDE49746E98FA01DDAD19BAB3CBF125EA
-
-# setup sources.list
-RUN echo "deb http://snapshots.ros.org/foxy/final/ubuntu focal main" > /etc/apt/sources.list.d/ros2-snapshots.list
+# set locale
+RUN apt update && apt install locales \
+    && locale-gen en_US en_US.UTF-8 \
+    && update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 
 # setup environment
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
+ENV ROS_DISTRO humble
 
-ENV ROS_DISTRO foxy
+# install packages
+RUN apt-get update && apt-get install -q -y --no-install-recommends \
+    software-properties-common \
+    dirmngr \
+    gnupg \
+    curl \
+    && add-apt-repository universe \
+    && rm -rf /var/lib/apt/lists/*
+    
+# setup keys
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+
+# setup sources.list
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
 
 # install bootstrap tools
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -52,17 +52,15 @@ RUN colcon mixin add default \
 
 # install ros2 packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-foxy-ros-base \
+    ros-${ROS_DISTRO}-ros-base \
     && rm -rf /var/lib/apt/lists/*
 
-
-
-# --------------- PX4 SETUP
-# RUN apt update && apt install -y git cmake make
+# --------------- PX4 SETUP ----------------------
 RUN apt update && apt install -y --no-install-recommends \
     python3-pip \
     git \
     wget \
+    lsb-release \
     build-essential
 
 RUN pip install --user -U pyros-genmsg setuptools
@@ -77,7 +75,13 @@ RUN apt-get update \
       && rm /tmp/cmake-install.sh \
       && ln -s /opt/cmake-3.24.1/bin/* /usr/local/bin
 
+# setup user
+ARG HOST_USER
+RUN useradd -ms /bin/bash ${HOST_USER}
+USER ${HOST_USER}
 
+WORKDIR /edra
+RUN apt install -y lsb-release
 # Setup Micro XRCE-DDS Agent & Client
 # Setup the Agent
 RUN git clone https://github.com/eProsima/Micro-XRCE-DDS-Agent.git \
@@ -89,22 +93,12 @@ RUN git clone https://github.com/eProsima/Micro-XRCE-DDS-Agent.git \
     && make install \
     && ldconfig /usr/local/lib/
 
-# RUN MicroXRCEAgent udp4 -p 8888
-RUN apt-get update && apt-get install -y lsb-release && apt-get clean all
-RUN apt install -y sudo gnupg
-
 # Install PX4
 RUN git clone https://github.com/PX4/PX4-Autopilot.git --recursive \
     && bash ./PX4-Autopilot/Tools/setup/ubuntu.sh \
     && cd PX4-Autopilot \
     && make px4_sitl
 
-# FIX GAZEBO NOT OPPENING
-# RUN apt update && apt install -y libqwt-qt5
-# RUN pip3 install kconfiglib
-# RUN pip install --user jsonschema
-# RUN pip install --user jinja2
-
-RUN echo "source /opt/ros/foxy/setup.bash" >> ~/.bashrc && echo "source /opt/ros/foxy/setup.sh" >> ~/.bashrc
+RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc && echo "source /opt/ros/${ROS_DISTRO}/setup.sh" >> ~/.bashrc
 
 ENTRYPOINT ["/bin/bash"]

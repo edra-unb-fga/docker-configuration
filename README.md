@@ -9,11 +9,19 @@ Primeiro, crie uma pasta para o armazenamento dos Volumes do docker, caso não t
 ```bash
     mkdir ~/Volumes
 ```
+!!!! Agora, você deve ir ao arquivo .env desse projeto e substituir "seu_username", pelo username do user do SEU HOST.
 
 ⚠️ A imagem é gigante e pesada mas contém tudo de que precisamos (na teoria) referente a px4, simuladores e o ros, por favor, não se assuste. O tempo de build estimado está entre 1h30-2h.
 
-A imagem completa 100% funcional é a complete/complete/v0.1.Dockerfile, para roda-la, basta usar o comando:
+A imagem completa 100% funcional é a complete/complete/v0.1.Dockerfile, para roda-la, basta usar UM dos comandos a seguir:
 ```bash
+    # Para inicializar o serviço que utiliza o ros foxy
+    sudo docker compose up -d ros-px4-foxy 
+
+    # Para inicializar o serviço que utiliza o ros humble
+    sudo docker compose up -d ros-px4-humble
+
+    # Para inicializar os dois serviços
     docker compose up -d --build
 ```
 Obs: Existem outros servicos comentados separadamente no docker-compose.yml, caso queira builda-los, basta descomentar.
@@ -29,6 +37,7 @@ Após buildado, entre no container através do seguinte comando:
 ```bash
    sudo docker exec -it ros-px4-complete /bin/bash
 ```
+Com esse comando, você pode abrir várias instancias de terminais dentro do seu container!! Sempre que quiser abrir um terminal novo, dentro do container, basta rodá-lo em outra aba do bash.
 
 OBS: Você pode definir alias para esse comando no seu ~/.bashrc para facilitar as coisas
 
