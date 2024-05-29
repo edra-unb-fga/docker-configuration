@@ -7,7 +7,7 @@ services:
     container_name: ros-px4-foxy
     build:
       context: .
-      dockerfile: ./complete-foxy/complete:v0.1.Dockerfile
+      dockerfile: ./foxy-px4.Dockerfile
     volumes:
       - /etc/group:/etc/group:ro
       - /etc/passwd:/etc/passwd:ro
@@ -28,7 +28,7 @@ services:
       container_name: ros-px4-humble
       build:
         context: .
-        dockerfile: ./complete-humble/complete:v0.0.Dockerfile
+        dockerfile: ./humble-px4.Dockerfile
       volumes:
         - /etc/group:/etc/group:ro
         - /etc/passwd:/etc/passwd:ro
