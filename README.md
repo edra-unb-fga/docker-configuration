@@ -9,7 +9,7 @@ Primeiro, crie uma pasta para o armazenamento dos Volumes do docker, caso não t
 ```bash
     mkdir ~/Volumes
 ```
-!!!! Agora, você deve ir ao arquivo .env desse projeto e substituir "seu_username", pelo username do user do SEU HOST.
+!!!! Agora, você deve criar um novo arquivo na raiz do projeto chamado .env e copiar as informações do .env.example nele, alterando o valor da váriavel HOST_USER pelo user do seu HOST.
 
 ⚠️ A imagem é gigante e pesada mas contém tudo de que precisamos (na teoria) referente a px4, simuladores e o ros, por favor, não se assuste. O tempo de build estimado está entre 1h30-2h.
 
@@ -24,7 +24,6 @@ A imagem completa 100% funcional é a complete/complete/v0.1.Dockerfile, para ro
     # Para inicializar os dois serviços
     docker compose up -d --build
 ```
-Obs: Existem outros servicos comentados separadamente no docker-compose.yml, caso queira builda-los, basta descomentar.
 
 ### 2. Rode o comando abaixo no seu terminal, fora do container. Ele é necessário para que o gazebo tenha permissão de funcionamento dentro do container.
 ```bash

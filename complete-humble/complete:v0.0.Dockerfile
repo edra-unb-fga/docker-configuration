@@ -97,9 +97,6 @@ RUN git clone https://github.com/PX4/PX4-Autopilot.git --recursive \
     && cd PX4-Autopilot \
     && make px4_sitl
 
-RUN apt remove -y gz-garden && apt install -y aptitude && sudo aptitude install -y gazebo libgazebo11 libgazebo-dev
-    
-
 # setup entrypoint
 COPY ../ros_entrypoint.sh /
 RUN chmod +x /ros_entrypoint.sh
