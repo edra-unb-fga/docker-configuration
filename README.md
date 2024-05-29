@@ -50,7 +50,13 @@ Você pode verificar se o ros2 está sendo identificado rodando:
 Com esse comando um guia de comandos do ros2 devem aparecer, mas caso ocorra um erro, rode o seguinte comando dentro do container e depois tente rodar ros2 novamente:
 
 ```bash
-   source /opt/ros/foxy/setup.bash
+    # Para o ros foxy:
+    source /opt/ros/foxy/setup.bash
+
+    # OU
+
+    # Para o ros humble:
+    source /opt/ros/humble/setup.bash
 ```
 
 Você pode ainda checar a versão do ubuntu:
@@ -59,5 +65,11 @@ Você pode ainda checar a versão do ubuntu:
 ```
 Ou que o gazebo está abrindo corretamente com o comando a seguir, ele deve abrir uma janela da aplicação:
 ```bash
+    # Para o container do ros foxy:
     gazebo
+
+    # OU
+
+    # Para o container do ros humble:
+    gz sim
 ```
