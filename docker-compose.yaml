@@ -1,45 +1,21 @@
-version: '3.9'
-
 services:
-  # --------- ROS FOXY ----------
-  ros-px4-foxy:
-    image: ros-px4-foxy:latest
-    container_name: ros-px4-foxy
+  ros-px4-humble:
+    image: ros-px4-humble:latest
+    container_name: ros-px4-humble
     build:
       context: .
-      dockerfile: ./foxy-px4.Dockerfile
+      dockerfile: ./humble-px4.Dockerfile
     volumes:
       - /etc/group:/etc/group:ro
       - /etc/passwd:/etc/passwd:ro
       - /etc/shadow:/etc/shadow:ro
       - /etc/sudoers.d:/etc/sudoers.d:ro
       - /home:/home:rw
-      - /home/${HOST_USERNAME}/Volumes:/edra/Volumes
+      - /home/${HOST_USER}/Volumes:/edra/Volumes
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
     environment:
-      - DISPLAY=:0
-      - LIBGL_ALWAYS_SOFTWARE=1
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
     network_mode: "host"
     stdin_open: true
     tty: true
-
-# ----------- ROS HUMBLE ----------
-  ros-px4-humble:
-      image: ros-px4-humble:latest
-      container_name: ros-px4-humble
-      build:
-        context: .
-        dockerfile: ./humble-px4.Dockerfile
-      volumes:
-        - /etc/group:/etc/group:ro
-        - /etc/passwd:/etc/passwd:ro
-        - /etc/shadow:/etc/shadow:ro
-        - /etc/sudoers.d:/etc/sudoers.d:ro
-        - /home:/home:rw
-        - /home/${HOST_USERNAME}/Volumes:/edra/Volumes
-      environment:
-        - DISPLAY=:0
-        - LIBGL_ALWAYS_SOFTWARE=1
-      network_mode: "host"
-      stdin_open: true
-      tty: true
-

@@ -3,6 +3,7 @@ FROM ubuntu:22.04
 ARG DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /edra
+
 # --------------- ROS2-SETUP------------------------
 # setup environment
 ENV LANG C.UTF-8
@@ -36,7 +37,6 @@ RUN set -eux; \
 # setup sources.list
 RUN echo "deb [ signed-by=/usr/share/keyrings/ros2-latest-archive-keyring.gpg ] http://packages.ros.org/ros2/ubuntu jammy main" > /etc/apt/sources.list.d/ros2-latest.list
 
-
 # install bootstrap tools
 RUN apt-get update && apt-get install --no-install-recommends -y \
     build-essential \
@@ -51,15 +51,15 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     && rm -rf /var/lib/apt/lists/*
 
 # bootstrap rosdep
-RUN rosdep init && \
-  rosdep update --rosdistro $ROS_DISTRO
+RUN (rosdep init || true) && \
+    rosdep update
 
 # setup colcon mixin and metadata
 RUN colcon mixin add default \
-      https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml && \
+    https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml && \
     colcon mixin update && \
     colcon metadata add default \
-      https://raw.githubusercontent.com/colcon/colcon-metadata-repository/master/index.yaml && \
+    https://raw.githubusercontent.com/colcon/colcon-metadata-repository/master/index.yaml && \
     colcon metadata update
 
 # install ros2 packages
@@ -67,10 +67,32 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-${ROS_DISTRO}-ros-base \
     && rm -rf /var/lib/apt/lists/*
 
-# --------------- PX4 SETUP -----------------
-RUN pip install --user -U pyros-genmsg setuptools
+# --------------- DEPENDÊNCIAS SAE & MISSÕES -----------------
+# Pacotes de sistema / ROS 2
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3-pymap3d \
+    ros-${ROS_DISTRO}-py-trees \
+    ros-${ROS_DISTRO}-py-trees-ros \
+    ros-${ROS_DISTRO}-py-trees-ros-interfaces \
+    ros-${ROS_DISTRO}-cv-bridge \
+    && rm -rf /var/lib/apt/lists/*
 
-#  install latest CMAKE VERSION
+# Pacotes Python via PIP
+RUN pip3 install --no-cache-dir \
+    "setuptools==65.5.0" \
+    "packaging<22.0" \
+    backports.tarfile \
+    pyros-genmsg \
+    ultralytics \
+    opencv-python \
+    numpy \
+    simple-pid
+
+# Cria diretório de configurações do Ultralytics para evitar avisos de permissão
+RUN mkdir -p /root/.config/Ultralytics
+
+# --------------- PX4 SETUP -----------------
+# install latest CMAKE VERSION
 RUN apt-get update \
     && wget https://github.com/Kitware/CMake/releases/download/v3.24.1/cmake-3.24.1-Linux-x86_64.sh \
     -q -O /tmp/cmake-install.sh \
@@ -81,7 +103,6 @@ RUN apt-get update \
     && ln -s /opt/cmake-3.24.1/bin/* /usr/local/bin
 
 # Setup Micro XRCE-DDS Agent & Client
-# Setup the Agent
 RUN git clone https://github.com/eProsima/Micro-XRCE-DDS-Agent.git \
     && cd Micro-XRCE-DDS-Agent \
     && mkdir build \
